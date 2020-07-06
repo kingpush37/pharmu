@@ -116,7 +116,7 @@ class _QuizPageState extends State<QuizPage> {
                        /**/
                      },
                    label: Text(
-                     'Next',
+                     'Next button',
                    ),
                    backgroundColor: Color(0xFF9B42F4),
                  ),
