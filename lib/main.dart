@@ -13,5 +13,3 @@ class PharmU extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'customCard.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class QuizPage extends StatefulWidget {
   @override
@@ -18,33 +20,27 @@ class _QuizPageState extends State<QuizPage> {
           style: TextStyle(
             color: Colors.white,
           ),
-        ), 
+        ),
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             child: Row(
-            children: <Widget>[
-              Container(
-                child: Text(
-                    'Linear Progress Bar...',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-      ),
-          ),
-          Expanded(
-            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Container(
-                  child: Text(
-                    'Question 1/10',
-                    style: TextStyle(
-                      color: Colors.white,
+                Expanded(
+                  child: CustomCard(
+                    color: Color(0xFF1D1E33),
+                    customChild: LinearPercentIndicator(
+                      alignment: MainAxisAlignment.center,
+                      width: 300.0,
+                      lineHeight: 30.0,
+                      percent: 0.5,
+                      backgroundColor: Colors.white,
+                      progressColor: Color(0xFF9B42F4),
                     ),
                   ),
                 ),
@@ -52,8 +48,13 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
           Expanded(
-            child:
-            Row(
+            child: CustomCard(
+              color: Color(0xFF1D1E33),
+              customChild: Text('Question 1/10'),
+            ),
+          ),
+          Expanded(
+            child: Row(
               children: <Widget>[
                 Container(
                   child: Text(
@@ -109,19 +110,19 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
           Expanded(
-              child: Row(
-                children: <Widget>[
-                 FloatingActionButton.extended(
-                     onPressed: () {
-                       /**/
-                     },
-                   label: Text(
-                     'Next button',
-                   ),
-                   backgroundColor: Color(0xFF9B42F4),
-                 ),
-                ],
-              ),
+            child: Row(
+              children: <Widget>[
+                FloatingActionButton.extended(
+                  onPressed: () {
+                    /**/
+                  },
+                  label: Text(
+                    'Next button',
+                  ),
+                  backgroundColor: Color(0xFF9B42F4),
+                ),
+              ],
+            ),
           ),
         ],
       ),
