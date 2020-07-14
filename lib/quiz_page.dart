@@ -20,7 +20,7 @@ class _QuizPageState extends State<QuizPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+              padding: const EdgeInsets.only(top: 30.0),
               child: LinearPercentIndicator(
                 alignment: MainAxisAlignment.center,
                 width: 330.0,
@@ -54,6 +54,8 @@ class _QuizPageState extends State<QuizPage> {
               customChild: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
                   children: <Widget>[
                     Text(
                       'Question 1',
@@ -63,7 +65,6 @@ class _QuizPageState extends State<QuizPage> {
                         color: Colors.white60,
                       ),
                     ),
-                    //TODO text baseline
                     Text(
                       '/10',
                       style: TextStyle(
@@ -88,11 +89,12 @@ class _QuizPageState extends State<QuizPage> {
             ),
             Container(
               height: 200.0,
+              width: 100.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
-                color: Colors.grey.withOpacity(0.1),
+                color: Color(0xFF212121).withOpacity(0.3),
               ),
-              padding: EdgeInsets.all(10.0),
+             margin: EdgeInsets.all(12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -110,7 +112,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             SizedBox(
-              height: 30.0,
+              height: 20.0,
             ),
             Container(
               padding: EdgeInsets.only(left: 20.0),
