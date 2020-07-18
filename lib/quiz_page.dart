@@ -1,16 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:pharm_u/question_database.dart';
 import 'customCard.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:math';
 
 class QuizPage extends StatefulWidget {
+
   @override
   _QuizPageState createState() => _QuizPageState();
 }
 
+  var database = new QuestionDatabase();
+  var random = new Random();
+  int quizLength = database.getDataBaseLength();
+  int answerCount = 0;
+  int count = 1;
+
+
+
+
 class _QuizPageState extends State<QuizPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,7 +72,7 @@ class _QuizPageState extends State<QuizPage> {
                   textBaseline: TextBaseline.alphabetic,
                   children: <Widget>[
                     Text(
-                      'Question 1',
+                      'Question $count',
                       style: TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.w900,
@@ -66,7 +80,7 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                     Text(
-                      '/10',
+                      '/$quizLength',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w900,
@@ -100,7 +114,8 @@ class _QuizPageState extends State<QuizPage> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      'What is the brand name for Tizanidine?',
+                      //Main question text
+                      database.getQuestion(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25.0,
@@ -127,7 +142,7 @@ class _QuizPageState extends State<QuizPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Multiple Choice Answer',
+                    database.getAnswer2(),
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -156,7 +171,7 @@ class _QuizPageState extends State<QuizPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Multiple Choice Answer',
+                    database.getAnswer(),
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -185,7 +200,7 @@ class _QuizPageState extends State<QuizPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Multiple Choice Answer',
+                    database.getAnswer3(),
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -204,9 +219,16 @@ class _QuizPageState extends State<QuizPage> {
             SizedBox(
               height: 25.0,
             ),
+            // ***Next button***
             FloatingActionButton(
               backgroundColor: Colors.transparent,
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  database.nextQuestion();
+                  answerCount++;
+                  count++;
+                });
+              },
               child: Container(
                 alignment: Alignment.center,
                 width: 180.0,
