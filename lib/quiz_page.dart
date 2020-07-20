@@ -16,14 +16,23 @@ class QuizPage extends StatefulWidget {
   var database = new QuestionDatabase();
   var random = new Random();
   int quizLength = database.getDataBaseLength();
-  int answerCount = 0;
+  int answerCount = 1;
   int count = 1;
+  int points = 2;
+  const Color kActiveColor = Colors.deepPurple;
+  const Color kInactiveColor = Colors.purpleAccent;
+  Question question;
+
+  enum Question {
+    ONE,
+    TWO,
+    THREE,
+  }
 
 
 
 
 class _QuizPageState extends State<QuizPage> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +48,18 @@ class _QuizPageState extends State<QuizPage> {
                 alignment: MainAxisAlignment.center,
                 width: 330.0,
                 lineHeight: 40.0,
-                percent: 0.5,
+                percent: answerCount / quizLength,
                 backgroundColor: Colors.white60,
                 linearGradient: LinearGradient(
                     colors: [Color(0xFFCB218E), Color(0xFF6617CB)]),
-                center: Text(
-                  '15HP',
-                  style: TextStyle(
-                    color: Colors.deepPurple[100],
-                    fontSize: 20.0,
-                  ),
+                center: Icon(FontAwesomeIcons.userNurse,
+                  color: Colors.white,
+                  size: 32.0,
                 ),
                 trailing: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left:15.0),
                   child: Icon(
-                    Icons.local_hospital,
+                    FontAwesomeIcons.heartbeat,
                     color: Colors.deepPurple,
                     size: 36.0,
                   ),
@@ -138,24 +144,31 @@ class _QuizPageState extends State<QuizPage> {
                     color: Colors.white, width: 1.0, style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    database.getAnswer2(),
-                    style: TextStyle(
-                      color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                question = Question.ONE;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      database.getAnswer2(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    iconSize: 30.0,
-                    icon: FaIcon(
-                      Icons.check_circle,
-                      color: Colors.deepPurple,
+                    IconButton(
+                      iconSize: 30.0,
+                      icon: FaIcon(
+                        Icons.check_circle,
+                        color: question == Question.ONE ? kActiveColor : kInactiveColor,
+                      ),
+                      onPressed: null,
                     ),
-                    onPressed: null,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Container(
@@ -167,24 +180,31 @@ class _QuizPageState extends State<QuizPage> {
                     color: Colors.white, width: 1.0, style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    database.getAnswer(),
-                    style: TextStyle(
-                      color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                  question = Question.TWO;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      database.getAnswer(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    iconSize: 30.0,
-                    icon: FaIcon(
-                      Icons.check_circle,
-                      color: Colors.deepPurple[200],
+                    IconButton(
+                      iconSize: 30.0,
+                      icon: FaIcon(
+                        Icons.check_circle,
+                        color: question == Question.TWO ? kActiveColor : kInactiveColor,
+                      ),
+                      onPressed: null,
                     ),
-                    onPressed: null,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Container(
@@ -196,24 +216,31 @@ class _QuizPageState extends State<QuizPage> {
                     color: Colors.white, width: 1.0, style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    database.getAnswer3(),
-                    style: TextStyle(
-                      color: Colors.white,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                  question = Question.THREE;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      database.getAnswer3(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    iconSize: 30.0,
-                    icon: FaIcon(
-                      Icons.check_circle,
-                      color: Colors.deepPurple[200],
+                    IconButton(
+                      iconSize: 30.0,
+                      icon: FaIcon(
+                        Icons.check_circle,
+                        color: question == Question.THREE ? kActiveColor : kInactiveColor,
+                      ),
+                      onPressed: null,
                     ),
-                    onPressed: null,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -227,6 +254,7 @@ class _QuizPageState extends State<QuizPage> {
                   database.nextQuestion();
                   answerCount++;
                   count++;
+                  points += 2;
                 });
               },
               child: Container(
@@ -249,3 +277,8 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
+
+
+
+
+
