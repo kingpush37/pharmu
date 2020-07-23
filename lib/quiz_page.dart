@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:pharm_u/question_database.dart';
+import 'constants.dart';
 import 'customCard.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
 
 class QuizPage extends StatefulWidget {
@@ -15,12 +17,11 @@ class QuizPage extends StatefulWidget {
 
   var database = new QuestionDatabase();
   var random = new Random();
-  int quizLength = database.getDataBaseLength();
-  int answerCount = 1;
-  int count = 1;
-  int points = 2;
-  const Color kActiveColor = Colors.deepPurple;
-  const Color kInactiveColor = Colors.purpleAccent;
+  var quizLength = database.getDataBaseLength();
+  var answerCount = 1;
+  var count = 1;
+  var points = 2;
+
   Question question;
 
   enum Question {
@@ -69,37 +70,43 @@ class _QuizPageState extends State<QuizPage> {
             SizedBox(
               height: 30.0,
             ),
-            CustomCard(
-              color: Colors.transparent,
-              customChild: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: <Widget>[
-                    Text(
-                      'Question $count',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white60,
-                      ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                CustomCard(
+                  color: Colors.transparent,
+                  customChild: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: <Widget>[
+                        Text(
+                          'Question $count',
+                          style:GoogleFonts.prompt(
+                            color: Colors.white,
+                            fontSize: 28.0,
+                          ),
+                        ),
+                        Text(
+                          '/$quizLength',
+                          style: GoogleFonts.prompt(
+                            color: Colors.white,
+                            fontSize: 21.0,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '/$quizLength',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white60,
-                        textBaseline: TextBaseline.alphabetic,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Icon(FontAwesomeIcons.list,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+              ],
             ),
             Container(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(6.0),
               child: Divider(
                 endIndent: 12.0,
                 height: 2.0,
@@ -122,9 +129,12 @@ class _QuizPageState extends State<QuizPage> {
                     child: Text(
                       //Main question text
                       database.getQuestion(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
+                      style: GoogleFonts.prompt(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w200,
+                        ),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -133,7 +143,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             SizedBox(
-              height: 20.0,
+              height: 6.0,
             ),
             Container(
               padding: EdgeInsets.only(left: 20.0),
@@ -155,8 +165,9 @@ class _QuizPageState extends State<QuizPage> {
                   children: <Widget>[
                     Text(
                       database.getAnswer2(),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         color: Colors.white,
+                        fontSize: 20.0,
                       ),
                     ),
                     IconButton(
@@ -191,8 +202,9 @@ class _QuizPageState extends State<QuizPage> {
                   children: <Widget>[
                     Text(
                       database.getAnswer(),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         color: Colors.white,
+                        fontSize: 20.0,
                       ),
                     ),
                     IconButton(
@@ -227,8 +239,9 @@ class _QuizPageState extends State<QuizPage> {
                   children: <Widget>[
                     Text(
                       database.getAnswer3(),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         color: Colors.white,
+                        fontSize: 20.0,
                       ),
                     ),
                     IconButton(
@@ -259,7 +272,7 @@ class _QuizPageState extends State<QuizPage> {
               },
               child: Container(
                 alignment: Alignment.center,
-                width: 180.0,
+                width: 110.0,
                 height: 80.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40.0),
@@ -268,7 +281,12 @@ class _QuizPageState extends State<QuizPage> {
                     Color(0xFF6617CB),
                   ]),
                 ),
-                child: Text('Next'),
+                child: Text('Next',
+                  style: GoogleFonts.prompt(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
               ),
             ),
           ],
