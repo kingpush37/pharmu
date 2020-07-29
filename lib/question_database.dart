@@ -30,22 +30,20 @@ class QuestionDatabase {
 
 
 
+
+
   String getQuestion() {
     return _questionBank[count].questionText;
   }
 
-  String getAnswer() {
-
-    return _questionBank[count].questionAnswer;
+  List getAnswer() {
+    var list = [_questionBank[count].questionAnswer, _questionBank[count + 1].questionAnswer, _questionBank[count + 2].questionAnswer];
+    list.shuffle();
+    return list;
   }
 
-  String getAnswer2() {
-    return _questionBank[count + 1].questionAnswer;
-  }
 
-  String getAnswer3() {
-    return _questionBank[count + 2].questionAnswer;
-  }
+
 
   int getDataBaseLength() {
     return _questionBank.length;

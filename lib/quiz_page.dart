@@ -13,16 +13,21 @@ class QuizPage extends StatefulWidget {
 
   @override
   _QuizPageState createState() => _QuizPageState();
+
 }
 
-  var database = new QuestionDatabase();
-  var random = new Random();
-  var quizLength = database.getDataBaseLength();
+
+ QuestionDatabase database = new QuestionDatabase();
+  int quizLength = database.getDataBaseLength();
+
   var answerCount = 1;
   var count = 1;
   var points = 2;
 
   Question question;
+  Shuffle answer;
+
+
 
   enum Question {
     ONE,
@@ -30,10 +35,29 @@ class QuizPage extends StatefulWidget {
     THREE,
   }
 
+  enum Shuffle {
+    FIRST,
+    SECOND,
+    THIRD,
+  }
 
 
 
 class _QuizPageState extends State<QuizPage> {
+  var getAnswer;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    answerList();
+  }
+
+void answerList() {
+  setState(() {
+  getAnswer = database.getAnswer();
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -145,116 +169,20 @@ class _QuizPageState extends State<QuizPage> {
             SizedBox(
               height: 6.0,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                question = Question.ONE;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      database.getAnswer2(),
-                      style: GoogleFonts.prompt(
-                        color: Colors.white,
-                        fontSize: 20.0,
+            Column(
+              children: <Widget>[
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: getAnswer.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(getAnswer[index]),
                       ),
-                    ),
-                    IconButton(
-                      iconSize: 30.0,
-                      icon: FaIcon(
-                        Icons.check_circle,
-                        color: question == Question.ONE ? kActiveColor : kInactiveColor,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                  question = Question.TWO;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      database.getAnswer(),
-                      style: GoogleFonts.prompt(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    IconButton(
-                      iconSize: 30.0,
-                      icon: FaIcon(
-                        Icons.check_circle,
-                        color: question == Question.TWO ? kActiveColor : kInactiveColor,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20.0),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                  question = Question.THREE;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      database.getAnswer3(),
-                      style: GoogleFonts.prompt(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    IconButton(
-                      iconSize: 30.0,
-                      icon: FaIcon(
-                        Icons.check_circle,
-                        color: question == Question.THREE ? kActiveColor : kInactiveColor,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
             SizedBox(
               height: 25.0,
@@ -265,6 +193,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 setState(() {
                   database.nextQuestion();
+                  answerList();
                   answerCount++;
                   count++;
                   points += 2;
@@ -295,6 +224,13 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
+
+
+
+
+
+
+
 
 
 
