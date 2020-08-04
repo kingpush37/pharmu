@@ -1,5 +1,7 @@
 
 
+import 'dart:math';
+
 import 'package:pharm_u/questions.dart';
 
 class QuestionDatabase {
@@ -38,7 +40,7 @@ class QuestionDatabase {
 
   List getAnswer() {
     var list = [_questionBank[count].questionAnswer, _questionBank[count + 1].questionAnswer, _questionBank[count + 2].questionAnswer];
-    list.shuffle();
+    list.shuffle(Random());
     return list;
   }
 
