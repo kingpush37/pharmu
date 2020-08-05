@@ -38,6 +38,10 @@ class QuestionDatabase {
     return _questionBank[count].questionText;
   }
 
+  String checkAnswer() {
+    return _questionBank[count].questionAnswer;
+  }
+
   List getAnswer() {
     var list = [_questionBank[count].questionAnswer, _questionBank[count + 1].questionAnswer, _questionBank[count + 2].questionAnswer];
     list.shuffle(Random());

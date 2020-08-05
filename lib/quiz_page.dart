@@ -22,7 +22,8 @@ class QuizPage extends StatefulWidget {
 
   var answerCount = 1;
   var count = 1;
-  var points = 2;
+  var points;
+
 
  String question;
   Shuffle answer;
@@ -44,8 +45,6 @@ class QuizPage extends StatefulWidget {
 Shuffle shuffle;
 
 class _QuizPageState extends State<QuizPage> {
-  Color selectedColor;
-  bool isSelected = false;
   var getAnswer;
 
 
@@ -54,6 +53,7 @@ class _QuizPageState extends State<QuizPage> {
     // TODO: implement initState
     super.initState();
     answerList();
+    gradeAnswer();
   }
 
 void answerList() {
@@ -61,6 +61,13 @@ void answerList() {
   getAnswer = database.getAnswer();
   });
 }
+
+  void gradeAnswer() {
+      setState(() {
+      points = answerCount / quizLength;
+      answerCount++;
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +83,7 @@ void answerList() {
                 alignment: MainAxisAlignment.center,
                 width: 330.0,
                 lineHeight: 40.0,
-                percent: answerCount / quizLength,
+                percent: points,
                 backgroundColor: Colors.white60,
                 linearGradient: LinearGradient(
                     colors: [Color(0xFFCB218E), Color(0xFF6617CB)]),
@@ -196,16 +203,23 @@ void answerList() {
                   ),
                   value: Shuffle.FIRST,
                   groupValue: shuffle,
-                  selected: true,
                   onChanged: (Shuffle value) {
                 setState(() {
                   shuffle = value;
+                  if (getAnswer[0] == database.checkAnswer() ) {
+                  gradeAnswer();
+                  database.nextQuestion();
+                  answerList();
+                  shuffle = null;
+
+                  count++;
+                  }
                 });
               }),
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 70.0),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
               height: 60.0,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -225,12 +239,20 @@ void answerList() {
                   onChanged: (Shuffle value) {
                     setState(() {
                       shuffle = value;
+                      if (getAnswer[1] == database.checkAnswer() ) {
+                        gradeAnswer();
+                        database.nextQuestion();
+                        answerList();
+                        shuffle = null;
+
+                        count++;
+                      }
                     });
                   }),
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 70.0),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
               height: 60.0,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -250,6 +272,14 @@ void answerList() {
                   onChanged: (Shuffle value) {
                     setState(() {
                       shuffle = value;
+                      if (getAnswer[2] == database.checkAnswer() ) {
+                        gradeAnswer();
+                        database.nextQuestion();
+                        answerList();
+                        shuffle = null;
+
+                        count++;
+                      }
                     });
                   }),
             ),
@@ -262,12 +292,10 @@ void answerList() {
               backgroundColor: Colors.transparent,
               onPressed: () {
                 setState(() {
-                  database.nextQuestion();
-                  answerList();
-                  answerCount++;
-                  shuffle = null;
-                  count++;
-                  points += 2;
+//                  database.nextQuestion();
+//                  answerList();
+//                  shuffle = null;
+//                  count++;
                 });
               },
               child: Container(
@@ -295,6 +323,8 @@ void answerList() {
     );
   }
 }
+
+
 
 //Column(
 //children: <Widget>[
