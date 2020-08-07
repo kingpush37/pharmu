@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:pharm_u/componets/radio_container_button.dart';
 import 'package:pharm_u/question_database.dart';
-import 'constants.dart';
-import 'customCard.dart';
+import 'componets/customCard.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:math';
 
 class QuizPage extends StatefulWidget {
 
@@ -17,54 +16,34 @@ class QuizPage extends StatefulWidget {
 }
 
 
- QuestionDatabase database = new QuestionDatabase();
-  int quizLength = database.getDataBaseLength();
-
-  var answerCount = 1;
-  var count = 1;
-  var points;
-
-
- String question;
-  Shuffle answer;
-
-
-
-  enum Question {
-    ONE,
-    TWO,
-    THREE,
-  }
-
-  enum Shuffle {
-    FIRST,
-    SECOND,
-    THIRD,
-  }
-
-Shuffle shuffle;
 
 class _QuizPageState extends State<QuizPage> {
+ QuestionDatabase database = new QuestionDatabase();
   var getAnswer;
+  var quizLength;
+  var answerCount = 1;
+  var questionCount = 1;
+  var linearIndicatorPoints;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    answerList();
-    gradeAnswer();
+    displayRandomAnswer();
+    updateLinearIndicator();
   }
 
-void answerList() {
+void displayRandomAnswer() {
   setState(() {
   getAnswer = database.getAnswer();
   });
 }
 
-  void gradeAnswer() {
+  void updateLinearIndicator() {
       setState(() {
-      points = answerCount / quizLength;
+      quizLength = database.getDataBaseLength();
+      linearIndicatorPoints = answerCount / quizLength;
       answerCount++;
       });
     }
@@ -83,7 +62,7 @@ void answerList() {
                 alignment: MainAxisAlignment.center,
                 width: 330.0,
                 lineHeight: 40.0,
-                percent: points,
+                percent: linearIndicatorPoints,
                 backgroundColor: Colors.white60,
                 linearGradient: LinearGradient(
                     colors: [Color(0xFFCB218E), Color(0xFF6617CB)]),
@@ -116,7 +95,7 @@ void answerList() {
                       textBaseline: TextBaseline.alphabetic,
                       children: <Widget>[
                         Text(
-                          'Question $count',
+                          'Question $questionCount',
                           style:GoogleFonts.prompt(
                             color: Colors.white,
                             fontSize: 28.0,
@@ -182,108 +161,60 @@ void answerList() {
            /***********
            * Answers wont work
             **********/
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: RadioListTile<Shuffle>(
-                controlAffinity: ListTileControlAffinity.trailing,
-                activeColor: Colors.deepPurpleAccent,
-                  title: Text(getAnswer[0],
-                    //textAlign: TextAlign.center,
-                    style: GoogleFonts.prompt(
-                      color: Colors.white,
-                      fontSize: 25.0,
-                    ),
-                  ),
-                  value: Shuffle.FIRST,
-                  groupValue: shuffle,
-                  onChanged: (Shuffle value) {
+            RadioContainerButton(
+                title: getAnswer[0],
+                value: Shuffle.FIRST,
+                valueType: shuffle,
+                function: (Shuffle value) {
+                  setState(() {
+                    shuffle = value;
+                    if (getAnswer[0] == database.checkAnswer()) {
+                      displayRandomAnswer();
+                      updateLinearIndicator();
+                      database.nextQuestion();
+                      shuffle = null;
+
+                      questionCount++;
+                    }
+                  });
+                }
+            ),
+            RadioContainerButton(
+                title: getAnswer[1],
+                value: Shuffle.SECOND,
+                valueType: shuffle,
+                function: (Shuffle value) {
+                  setState(() {
+                    shuffle = value;
+                    if (getAnswer[1] == database.checkAnswer()) {
+                      displayRandomAnswer();
+                      updateLinearIndicator();
+                      database.nextQuestion();
+                      shuffle = null;
+
+                      questionCount++;
+                    }
+                  });
+                }
+            ),
+            RadioContainerButton(
+              title: getAnswer[2],
+              value: Shuffle.THIRD,
+              valueType: shuffle,
+              function: (Shuffle value) {
                 setState(() {
                   shuffle = value;
-                  if (getAnswer[0] == database.checkAnswer() ) {
-                  gradeAnswer();
-                  database.nextQuestion();
-                  answerList();
-                  shuffle = null;
+                  if (getAnswer[2] == database.checkAnswer()) {
+                    displayRandomAnswer();
+                    updateLinearIndicator();
+                    database.nextQuestion();
+                    shuffle = null;
 
-                  count++;
+                    questionCount++;
                   }
                 });
-              }),
+              }
             ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: RadioListTile<Shuffle>(
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  activeColor: Colors.deepPurpleAccent,
-                  title: Text(getAnswer[1],
-                    style: GoogleFonts.prompt(
-                      color: Colors.white,
-                      fontSize: 25.0,
-                    ),),
-                  value: Shuffle.SECOND,
-                  groupValue: shuffle,
-                  onChanged: (Shuffle value) {
-                    setState(() {
-                      shuffle = value;
-                      if (getAnswer[1] == database.checkAnswer() ) {
-                        gradeAnswer();
-                        database.nextQuestion();
-                        answerList();
-                        shuffle = null;
-
-                        count++;
-                      }
-                    });
-                  }),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
-              height: 60.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.white, width: 1.0, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: RadioListTile<Shuffle>(
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  activeColor: Colors.transparent,
-                  title: Text(getAnswer[2],
-                    style: GoogleFonts.prompt(
-                    color: Colors.white,
-                    fontSize: 25.0,
-                  ),),
-                  value: Shuffle.THIRD,
-                  groupValue: shuffle,
-                  onChanged: (Shuffle value) {
-                    setState(() {
-                      shuffle = value;
-                      if (getAnswer[2] == database.checkAnswer() ) {
-                        gradeAnswer();
-                        database.nextQuestion();
-                        answerList();
-                        shuffle = null;
-
-                        count++;
-                      }
-                    });
-                  }),
-            ),
-            
             SizedBox(
               height: 25.0,
             ),
@@ -326,23 +257,7 @@ void answerList() {
 
 
 
-//Column(
-//children: <Widget>[
-//ListView.builder(
-//shrinkWrap: true,
-//itemCount: getAnswer.length,
-//itemBuilder: (context, index) {
-//return Card(
-//shape: StadiumBorder(side: BorderSide(color: Colors.deepPurpleAccent)),
-//child: ListTile(
-//title: Text(getAnswer[index]),
-//trailing: Radio(value: null, groupValue: null, onChanged: null),
-//),
-//);
-//},
-//),
-//],
-//),
+
 
 
 
