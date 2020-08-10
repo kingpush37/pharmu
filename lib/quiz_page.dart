@@ -8,6 +8,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class QuizPage extends StatefulWidget {
 
   @override
@@ -23,6 +24,7 @@ class _QuizPageState extends State<QuizPage> {
   var quizLength;
   var answerCount = 1;
   var questionCount = 1;
+  bool isCorrect = false;
   var linearIndicatorPoints;
 
 
@@ -169,9 +171,10 @@ void displayRandomAnswer() {
                   setState(() {
                     shuffle = value;
                     if (getAnswer[0] == database.checkAnswer()) {
+                      isCorrect = true;
+                      database.nextQuestion();
                       displayRandomAnswer();
                       updateLinearIndicator();
-                      database.nextQuestion();
                       shuffle = null;
 
                       questionCount++;
@@ -187,9 +190,10 @@ void displayRandomAnswer() {
                   setState(() {
                     shuffle = value;
                     if (getAnswer[1] == database.checkAnswer()) {
+                      isCorrect = true;
+                      database.nextQuestion();
                       displayRandomAnswer();
                       updateLinearIndicator();
-                      database.nextQuestion();
                       shuffle = null;
 
                       questionCount++;
@@ -205,9 +209,10 @@ void displayRandomAnswer() {
                 setState(() {
                   shuffle = value;
                   if (getAnswer[2] == database.checkAnswer()) {
+                    isCorrect = true;
+                    database.nextQuestion();
                     displayRandomAnswer();
                     updateLinearIndicator();
-                    database.nextQuestion();
                     shuffle = null;
 
                     questionCount++;
@@ -219,33 +224,24 @@ void displayRandomAnswer() {
               height: 25.0,
             ),
             // ***Next button***
-            FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              onPressed: () {
-                setState(() {
-//                  database.nextQuestion();
-//                  answerList();
-//                  shuffle = null;
-//                  count++;
-                });
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 110.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.0),
-                  gradient: LinearGradient(colors: [
-                    Color(0xFFCB218E),
-                    Color(0xFF6617CB),
-                  ]),
-                ),
-                child: Text('Next',
-                  style: GoogleFonts.prompt(
-                    color: Colors.white,
-                    fontSize: 20.0,
+            Container(
+              width: 65.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: Color(0xFF6617CB).withOpacity(0.2),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                   isCorrect ? 'Correct!' : ' ',
+                    style:GoogleFonts.prompt(
+                color: Color(0xFFCB218E),
+                fontSize: 25.0,
+              ),
                   ),
-                ),
+                ],
               ),
             ),
       ],

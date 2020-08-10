@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:delayed_display/delayed_display.dart';
+
   enum Shuffle {
   FIRST,
   SECOND,
@@ -32,11 +34,14 @@ class RadioContainerButton extends StatelessWidget {
       child: RadioListTile<Shuffle>(
           controlAffinity: ListTileControlAffinity.trailing,
           activeColor: Colors.deepPurpleAccent,
-          title: Text(title,
-            style: GoogleFonts.prompt(
-              color: Colors.white,
-              fontSize: 25.0,
-            ),),
+          title: DelayedDisplay(
+            delay: Duration(seconds: 1),
+            child: Text(title,
+              style: GoogleFonts.prompt(
+                color: Colors.white,
+                fontSize: 25.0,
+              ),),
+          ),
           value: value,
           groupValue: valueType,
           onChanged: function,),
